@@ -39,28 +39,56 @@ export class Denuncia {
     return this.titulo;
   }
 
+  public setTitulo(titulo: string): void {
+    this.titulo = titulo;
+  }
+
   public getData(): Date {
     return this.data;
+  }
+
+  public setData(data: Date): void {
+    this.data = data;
   }
 
   public getStatus(): string {
     return this.status;
   }
 
+  public setStatus(status: string): void {
+    this.status = status;
+  }
+
   public getImagem(): string {
     return this.imagem;
+  }
+
+  public setImagem(imagem: string): void {
+    this.imagem = imagem;
   }
 
   public getDescricao(): string {
     return this.descricao;
   }
 
+  public setDescricao(descricao: string) {
+    this.descricao = descricao;
+  }
+
   public getCategoria(): string {
     return this.categoria;
   }
 
+  public setCategoria(categoria: string): void {
+    this.categoria = categoria;
+  }
+
   public getLocal(): string {
     return this.local;
+  }
+
+  public setLocal(local: string): void {
+    this.local = local;
   }
 
   public toObject(): DenunciaData {
