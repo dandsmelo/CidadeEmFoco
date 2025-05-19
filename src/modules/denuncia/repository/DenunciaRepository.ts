@@ -14,15 +14,17 @@ export class DenunciaRepository {
     return result.insertedId;
   }
 
-  public async listarDenuncias(): Promise<(DenunciaData & { id: ObjectId })[]> {
+  public async listarDenuncias(): Promise<(DenunciaData & { _id: ObjectId })[]> {
     const docs = await this.getCollection().find().toArray();
-    return docs.map((doc: any) => ({ ...doc, id: doc._id }));
+    return docs;
   }
 
-  public async getDenunciaById(id: ObjectId): Promise<(DenunciaData & { id: ObjectId }) | null> {
+  public async getDenunciaById(id: ObjectId): Promise<(DenunciaData & { _id: ObjectId }) | null> {
     const doc = await this.getCollection().findOne({ _id: id });
-    if (!doc) return null;
-    return { ...doc, id: id };
+    if (!doc) {
+      return null;
+    }
+    return { ...doc, _id: id };
   }
 
   public async atualizarDenuncia(id: ObjectId, dados: Partial<DenunciaData>): Promise<boolean> {

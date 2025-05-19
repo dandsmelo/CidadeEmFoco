@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { DenunciaController } from "../../controllers/denuncia";
+import { DenunciaController } from "../../controllers/denuncia/DenunciaController";
 
 const denunciaController = new DenunciaController();
 const denunciaRoutes = Router();
