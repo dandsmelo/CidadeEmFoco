@@ -6,7 +6,7 @@ export class Denuncia {
   private titulo: string;
   private data: Date;
   private status: string;
-  private imagem: string;
+  private imagem?: string;
   private descricao: string;
   private categoria: string;
   private local: string;
@@ -15,10 +15,10 @@ export class Denuncia {
     titulo: string,
     data: Date,
     status: string,
-    imagem: string,
     descricao: string,
     categoria: string,
     local: string,
+    imagem?: string,
     id?: ObjectId
   ) {
     this.id = id;
@@ -59,11 +59,11 @@ export class Denuncia {
     this.status = status;
   }
 
-  public getImagem(): string {
+  public getImagem(): string | undefined {
     return this.imagem;
   }
 
-  public setImagem(imagem: string): void {
+  public setImagem(imagem?: string): void {
     this.imagem = imagem;
   }
 
