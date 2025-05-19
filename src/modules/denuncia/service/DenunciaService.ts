@@ -10,11 +10,11 @@ export class DenunciaService {
     return await this.repository.criarDenuncia(denuncia.toObject());
   }
 
-  public async listarDenuncias(): Promise<(DenunciaData & { id: ObjectId })[]> {
+  public async listarDenuncias(): Promise<(DenunciaData & { _id: ObjectId })[]> {
     return await this.repository.listarDenuncias();
   }
 
-  public async getDenunciaById(id: string): Promise<(DenunciaData & { id: ObjectId }) | null> {
+  public async getDenunciaById(id: string): Promise<(DenunciaData & { _id: ObjectId }) | null> {
     return await this.repository.getDenunciaById(new ObjectId(id));
   }
 

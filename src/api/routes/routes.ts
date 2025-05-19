@@ -1,5 +1,5 @@
 import express from "express";
-import denunciaRoutes from "./denuncia";
+import denunciaRoutes from "./denuncia/DenunciaRotas";
 import usuarioRoutes from "./usuario/UsuarioRotas";
 
 const app = express();
