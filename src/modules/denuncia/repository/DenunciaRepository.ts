@@ -27,6 +27,11 @@ export class DenunciaRepository {
     return { ...doc, _id: id };
   }
 
+  public async getDenunciasByUsuarioId(usuarioId: ObjectId): Promise<(DenunciaData & { _id: ObjectId })[]> {
+    const docs = await this.getCollection().find({ usuarioId }).toArray();
+    return docs;
+  }
+
   public async atualizarDenuncia(id: ObjectId, dados: Partial<DenunciaData>): Promise<boolean> {
     const result = await this.getCollection().updateOne({ _id: id }, { $set: dados });
     return result.modifiedCount > 0;
