@@ -8,6 +8,7 @@ export class Usuario {
     private email: string;
     private senha: string;
     private tipo: Tipo;
+    private fotoPerfil?: string;
 
     constructor(
         nome: string,
@@ -15,6 +16,7 @@ export class Usuario {
         email: string,
         senha: string,
         tipo: Tipo,
+        fotoPerfil?: string,
         id?: ObjectId,
     ) {
         this.id = id;
@@ -23,6 +25,7 @@ export class Usuario {
         this.email = email;
         this.senha = senha;
         this.tipo = tipo;
+        this.fotoPerfil = fotoPerfil;
     }
 
     public getId(): ObjectId | undefined {
@@ -69,6 +72,14 @@ export class Usuario {
         this.tipo = tipo;
     }
 
+    public getFotoPerfil(): string | undefined {
+        return this.fotoPerfil;
+    }
+
+    public setFotoPerfil(fotoPerfil?: string): void {
+        this.fotoPerfil = fotoPerfil;
+    }
+
     public toObject(): UsuarioData {
         return {
             nome: this.nome,
@@ -76,6 +87,7 @@ export class Usuario {
             email: this.email,
             senha: this.senha,
             tipo: this.tipo,
+            fotoPerfil: this.fotoPerfil,
         };
     }
 }
