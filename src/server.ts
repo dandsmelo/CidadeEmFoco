@@ -5,7 +5,11 @@ import { connectDb } from "./config/db";
 
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:8081',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 app.use(morgan("dev"));
 
 connectDb();
