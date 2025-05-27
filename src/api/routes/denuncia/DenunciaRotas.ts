@@ -15,6 +15,10 @@ denunciaRoutes.get("/", async (req, res) => {
 denunciaRoutes.get("/:id", async (req, res) => {
     await denunciaController.getDenunciaById(req, res);
 });
+
+denunciaRoutes.get("/:userId", async (req, res) => {
+    await denunciaController.getDenunciasByUsuarioId(req, res);
+})
   
 denunciaRoutes.put("/:id", async (req, res) => {
     await denunciaController.atualizarDenuncia(req, res);
@@ -23,6 +27,5 @@ denunciaRoutes.put("/:id", async (req, res) => {
 denunciaRoutes.delete("/:id", async (req, res) => {
     await denunciaController.deletarDenuncia(req, res);
 });
-
 
 export default denunciaRoutes;

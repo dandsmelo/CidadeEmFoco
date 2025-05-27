@@ -40,6 +40,19 @@ export class DenunciaController {
     }
   }
 
+  public async getDenunciasByUsuarioId(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+      const denuncias = await service.getDenunciasByUsuarioId(userId);
+      if (denuncias.length === 0) {
+        return res.status(404).json({ message: "Nenhuma denúncia encontrada para este usuário." });
+      }
+      res.status(200).json(denuncias);
+    } catch (err) {
+      res.status(500).json({ message: "Erro ao buscar denúncias do usuário", error: err });
+    }
+  }
+
   public async atualizarDenuncia(req: Request, res: Response) {
     try {
       const { id } = req.params;

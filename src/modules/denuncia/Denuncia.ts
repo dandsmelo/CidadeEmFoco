@@ -10,6 +10,7 @@ export class Denuncia {
   private descricao: string;
   private categoria: string;
   private local: string;
+  private usuarioId: ObjectId;
 
   constructor(
     titulo: string,
@@ -18,6 +19,7 @@ export class Denuncia {
     descricao: string,
     categoria: string,
     local: string,
+    usuarioId: ObjectId,
     imagem?: string,
     id?: ObjectId
   ) {
@@ -29,6 +31,7 @@ export class Denuncia {
     this.descricao = descricao;
     this.categoria = categoria;
     this.local = local;
+    this.usuarioId = usuarioId;
   }
 
   public getId(): ObjectId | undefined {
@@ -91,6 +94,14 @@ export class Denuncia {
     this.local = local;
   }
 
+  public getUsuarioId(): ObjectId {
+    return this.usuarioId;
+  }
+
+  public setUsuarioId(usuarioId: ObjectId) {
+    this.usuarioId = usuarioId;
+  }
+
   public toObject(): DenunciaData {
     return {
       titulo: this.titulo,
@@ -100,6 +111,7 @@ export class Denuncia {
       descricao: this.descricao,
       categoria: this.categoria,
       local: this.local,
+      usuarioId: this.usuarioId,
     };
   }
 }

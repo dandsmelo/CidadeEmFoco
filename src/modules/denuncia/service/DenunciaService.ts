@@ -18,6 +18,10 @@ export class DenunciaService {
     return await this.repository.getDenunciaById(new ObjectId(id));
   }
 
+  public async getDenunciasByUsuarioId(usuarioId: string): Promise<(DenunciaData & { _id: ObjectId })[]> {
+    return await this.repository.getDenunciasByUsuarioId(new ObjectId(usuarioId));
+  }
+
   public async atualizarDenuncia(id: string, dadosAtualizados: Partial<DenunciaData>): Promise<boolean> {
     return await this.repository.atualizarDenuncia(new ObjectId(id), dadosAtualizados);
   }
