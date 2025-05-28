@@ -2,10 +2,9 @@ import express from "express";
 import denunciaRoutes from "./denuncia/DenunciaRotas";
 import usuarioRoutes from "./usuario/UsuarioRotas";
 
-const app = express();
-app.use(express.json());
+const router = express.Router();
 
-app.use("/denuncia", denunciaRoutes);
-app.use("/usuario", usuarioRoutes);
+router.use("/denuncia", denunciaRoutes);
+router.use("/usuario", usuarioRoutes);
 
-export default app;
+export default router;

@@ -1,16 +1,21 @@
 import cors from "cors";
-import app from "./api/routes/routes";
+import express from "express";
 import morgan from "morgan";
 import { connectDb } from "./config/db";
+import routes from "./api/routes/routes";
 
 const PORT = process.env.PORT || 3000;
+const app = express();
 
 app.use(cors({
   origin: 'http://localhost:8081',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
+
 app.use(morgan("dev"));
+app.use(express.json());
+app.use("/", routes);
 
 connectDb();
 
