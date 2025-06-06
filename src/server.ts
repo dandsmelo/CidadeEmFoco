@@ -1,3 +1,4 @@
+/// <reference path="./types/index.d.ts" />
 import cors from "cors";
 import express from "express";
 import morgan from "morgan";

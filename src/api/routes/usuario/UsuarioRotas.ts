@@ -13,19 +13,19 @@ usuarioRoutes.post("/login", async (req, res) => {
     await usuarioController.login(req, res);
 });
 
-usuarioRoutes.get("/", async (req, res) => {
+usuarioRoutes.get("/", autenticarToken, async (req, res) => {
     await usuarioController.listarUsuarios(req, res);
 })
 
-usuarioRoutes.get("/:id", async (req, res) => {
+usuarioRoutes.get("/:id", autenticarToken, async (req, res) => {
     await usuarioController.getUsuarioById(req, res);
 });
 
-usuarioRoutes.put("/:id", async (req, res) => {
+usuarioRoutes.put("/:id", autenticarToken, async (req, res) => {
     await usuarioController.atualizarUsuario(req, res);
 });
 
-usuarioRoutes.delete("/:id", async (req, res) => {
+usuarioRoutes.delete("/:id", autenticarToken, async (req, res) => {
     await usuarioController.deletarUsuario(req, res);
 })
 
