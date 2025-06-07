@@ -6,11 +6,11 @@ export class Denuncia {
   private titulo: string;
   private data: Date;
   private status: string;
-  private imagem?: string;
   private descricao: string;
   private categoria: string;
   private local: string;
   private usuarioId: ObjectId;
+  private imagem?: string;
 
   constructor(
     titulo: string,
@@ -27,11 +27,12 @@ export class Denuncia {
     this.titulo = titulo;
     this.data = data;
     this.status = status;
-    this.imagem = imagem;
     this.descricao = descricao;
     this.categoria = categoria;
     this.local = local;
     this.usuarioId = usuarioId;
+    this.imagem = imagem;
+
   }
 
   public getId(): ObjectId | undefined {
@@ -107,11 +108,11 @@ export class Denuncia {
       titulo: this.titulo,
       data: this.data,
       status: this.status,
-      imagem: this.imagem,
       descricao: this.descricao,
       categoria: this.categoria,
       local: this.local,
       usuarioId: this.usuarioId,
+      imagem: this.imagem,
     };
   }
 }
