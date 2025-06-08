@@ -32,11 +32,15 @@ export class UsuarioController {
   public async login(req: Request, res: Response) {
     try {
       const { email, senha } = req.body;
-      const token = await service.login(email, senha);
-      if (!token) {
+      const result = await service.login(email, senha);
+      if (!result) {
         return res.status(401).json({ error: "Credenciais inválidas" });
       }
-      res.status(200).json({ message: "Usuário logado", token });
+      res.status(200).json({ 
+        message: "Usuário logado", 
+        token: result.token, 
+        userId: result.userId 
+      });
     } catch (error) {
       res.status(500).json({ error: "Erro no login" });
     }
