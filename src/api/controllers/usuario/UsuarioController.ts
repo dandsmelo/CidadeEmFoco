@@ -39,7 +39,8 @@ export class UsuarioController {
       res.status(200).json({ 
         message: "Usuário logado", 
         token: result.token, 
-        userId: result.userId 
+        userId: result.userId,
+        userType: result.userType
       });
     } catch (error) {
       res.status(500).json({ error: "Erro no login" });

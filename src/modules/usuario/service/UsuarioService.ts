@@ -4,6 +4,7 @@ import { UsuarioData } from "../interface/UsuarioData";
 import { Usuario } from "../Usuario";
 import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
+import LoginData from "./interfaces/login/LoginData";
 
 export class UsuarioService {
     private repository = new UsuarioRepository();
@@ -16,7 +17,7 @@ export class UsuarioService {
         return await this.repository.listarUsuarios();
     }
 
-    public async login(email: string, senha: string): Promise<{ token: string, userId: string } | null> {
+    public async login(email: string, senha: string): Promise<LoginData | null> {
         const user = await this.repository.login(email);
         if (user && await compare(senha, user.senha)) {
             const token = jwt.sign(
@@ -24,7 +25,7 @@ export class UsuarioService {
                 process.env.JWT_SECRET as string,
                 { expiresIn: "1h" }
             );
-            return { token, userId: user._id.toString() };
+            return { token, userId: user._id.toString(), userType: user.tipo };
         }
         return null;
     }
