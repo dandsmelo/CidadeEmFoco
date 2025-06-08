@@ -17,7 +17,7 @@ denunciaRoutes.get("/:id", autenticarToken, async (req, res) => {
     await denunciaController.getDenunciaById(req, res);
 });
 
-denunciaRoutes.get("/:userId", autenticarToken, async (req, res) => {
+denunciaRoutes.get("/usuario/:userId", autenticarToken, async (req, res) => {
     await denunciaController.getDenunciasByUsuarioId(req, res);
 })
   
