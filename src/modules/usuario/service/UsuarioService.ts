@@ -16,7 +16,7 @@ export class UsuarioService {
         return await this.repository.listarUsuarios();
     }
 
-    public async login(email: string, senha: string): Promise<string | null> {
+    public async login(email: string, senha: string): Promise<{ token: string, userId: string } | null> {
         const user = await this.repository.login(email);
         if (user && await compare(senha, user.senha)) {
             const token = jwt.sign(
@@ -24,7 +24,7 @@ export class UsuarioService {
                 process.env.JWT_SECRET as string,
                 { expiresIn: "1h" }
             );
-            return token;
+            return { token, userId: user._id.toString() };
         }
         return null;
     }
