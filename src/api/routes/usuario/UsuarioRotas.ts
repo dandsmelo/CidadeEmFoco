@@ -29,4 +29,10 @@ usuarioRoutes.delete("/:id", autenticarToken, async (req, res) => {
     await usuarioController.deletarUsuario(req, res);
 })
 
+usuarioRoutes.post("/verificar-sms", async (req, res) => {
+  await usuarioController.verificarCodigoSMS(req, res);
+});
+
+
+
 export default usuarioRoutes;

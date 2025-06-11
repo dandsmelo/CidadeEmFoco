@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { UsuarioService } from "../../../modules/usuario/service/UsuarioService";
 import { Usuario } from "../../../modules/usuario/Usuario";
 import bcrypt from "bcrypt";
+import { sendVerificationCode, checkVerificationCode } from "../../../shared/twilio/twilioService";
+import jwt from 'jsonwebtoken';
+
 
 const service = new UsuarioService();
 
@@ -36,16 +39,84 @@ export class UsuarioController {
       if (!result) {
         return res.status(401).json({ error: "Credenciais inválidas" });
       }
-      res.status(200).json({ 
-        message: "Usuário logado", 
-        token: result.token, 
-        userId: result.userId,
-        userType: result.userType
-      });
-    } catch (error) {
-      res.status(500).json({ error: "Erro no login" });
+      // Aqui: buscar o telefone do usuário autenticado
+      const usuario = await service.getUsuarioById(result.userId);
+      if (!usuario || !usuario.telefone) {
+        return res.status(400).json({ error: "Telefone não encontrado para o usuário" });
     }
+
+    // Garante que o telefone tenha o +55 no começo
+    const telefoneFormatado = usuario.telefone.startsWith('+')
+    ? usuario.telefone
+    : `+55${usuario.telefone}`;
+
+
+    // Enviar código SMS
+    await sendVerificationCode(telefoneFormatado);
+
+    res.status(200).json({ 
+      message: "Usuário logado. Código SMS enviado.", 
+      needVerification: true, 
+      token: result.token, 
+      userId: result.userId,
+      userType: result.userType,
+      phoneNumber: usuario.telefone
+    });
+  } catch (error) {
+  console.error("Erro no login:", error);
+  res.status(500).json({ error: "Erro no login", details: error });
+}
+}
+
+public async verificarCodigoSMS(req: Request, res: Response) {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ success: false, message: "Token não fornecido" });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "seuSegredo");
+
+    const userId = decoded.id;
+
+    const usuario = await service.getUsuarioById(userId);
+    if (!usuario || !usuario.telefone) {
+      return res.status(400).json({ success: false, message: "Telefone não encontrado" });
+    }
+
+    const { code } = req.body;
+
+    const telefoneFormatado = usuario.telefone.startsWith('+')
+    ? usuario.telefone
+    : `+55${usuario.telefone}`;
+    
+    const validado = await checkVerificationCode(telefoneFormatado, code);
+
+
+    if (validado) {
+      // Gera o token final, se quiser
+      const finalToken = jwt.sign({ id: userId }, process.env.JWT_SECRET || "seuSegredo", {
+        expiresIn: '7d'
+      });
+
+      res.status(200).json({ 
+        success: true, 
+        message: "Código verificado com sucesso",
+        token: finalToken,
+        userId: userId,
+        userType: usuario.tipo
+      });
+    } else {
+      res.status(400).json({ success: false, message: "Código inválido" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Erro ao verificar código" });
   }
+}
+
+
 
   public async getUsuarioById(req: Request, res: Response) {
     try {
@@ -85,4 +156,6 @@ export class UsuarioController {
       res.status(500).json({ error: "Erro ao deletar usuário" });
     }
   }
+
+
 }
