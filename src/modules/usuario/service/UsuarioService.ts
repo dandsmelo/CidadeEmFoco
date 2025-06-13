@@ -4,6 +4,7 @@ import { UsuarioData } from "../interface/UsuarioData";
 import { Usuario } from "../Usuario";
 import { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { hash } from "bcrypt";
 import LoginData from "./interfaces/login/LoginData";
 
 export class UsuarioService {
@@ -28,6 +29,17 @@ export class UsuarioService {
             return { token, userId: user._id.toString(), userType: user.tipo };
         }
         return null;
+    }
+
+    public async atualizarSenha(id: string, senhaAtual: string, novaSenha: string): Promise<boolean> {
+        const usuario = await this.repository.getUsuarioById(new ObjectId(id));
+        if (!usuario) return false;
+
+        const senhaConfere = await compare(senhaAtual, usuario.senha);
+        if (!senhaConfere || senhaAtual === novaSenha) return false;
+
+        const senhaHash = await hash(novaSenha, 10);
+        return await this.repository.atualizarSenha(new ObjectId(id), senhaHash);
     }
 
     public async getUsuarioById(id: string): Promise<(UsuarioData & { _id: ObjectId }) | null> {
