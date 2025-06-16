@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ObjectId } from "mongodb";
 import { Denuncia } from "../../../modules/denuncia/Denuncia";
 import { DenunciaService } from "../../../modules/denuncia/service/DenunciaService";
+import { geocodeAddress } from "../../../modules/denuncia/service/geocodeAddress/geocodeAddress";
 
 const service = new DenunciaService();
 
@@ -17,8 +18,10 @@ export class DenunciaController {
         return res.status(401).json({error: "usuário não autenticado"})
       }
 
-      const usuarioId = new ObjectId(usuario.id)
+      const usuarioId = new ObjectId(usuario.id);
 
+      const { latitude, longitude } = await geocodeAddress(local);
+       
       const denuncia = new Denuncia(
         titulo, 
         new Date(data), 
@@ -27,7 +30,10 @@ export class DenunciaController {
         categoria, 
         local, 
         usuarioId, 
-        imagem);
+        imagem,
+        latitude,
+        longitude,
+      );
 
       console.log(usuarioId);
       const id = await service.criarDenuncia(denuncia);
