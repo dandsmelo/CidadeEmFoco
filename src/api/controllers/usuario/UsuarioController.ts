@@ -116,6 +116,25 @@ export class UsuarioController {
   }
   }
 
+  public async atualizarSenha(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { senhaAtual, novaSenha } = req.body;
+
+      if (!senhaAtual || !novaSenha) {
+        return res.status(400).json({ message: "Campos obrigatórios não fornecidos" });
+      }
+
+      const sucesso = await service.atualizarSenha(id, senhaAtual, novaSenha);
+      if (!sucesso) {
+        return res.status(401).json({ message: "Senha atual incorreta ou nova senha inválida" });
+      }
+
+      res.status(200).json({ message: "Senha atualizada com sucesso" });
+    } catch (err) {
+      res.status(500).json({ message: "Erro ao atualizar senha", error: err });
+    }
+  }
 
 
   public async getUsuarioById(req: Request, res: Response) {

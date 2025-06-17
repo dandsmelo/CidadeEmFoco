@@ -22,6 +22,14 @@ export class UsuarioRepository {
         return { ...user, _id: user._id } as UsuarioData & { _id: ObjectId };
     }
 
+    public async atualizarSenha(id: ObjectId, senhaHash: string): Promise<boolean> {
+        const resultado = await this.getCollection().updateOne(
+        { _id: id },
+        { $set: { senha: senhaHash } }
+        );
+        return resultado.modifiedCount > 0;
+    }
+
     public async listarUsuarios(): Promise<(UsuarioData & { _id: ObjectId })[]> {
         const documents = await this.getCollection().find().toArray();
         return documents;

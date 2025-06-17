@@ -17,6 +17,10 @@ usuarioRoutes.get("/", autenticarToken, async (req, res) => {
     await usuarioController.listarUsuarios(req, res);
 })
 
+usuarioRoutes.put("/:id/senha", autenticarToken, async (req, res) => {
+    await usuarioController.atualizarSenha(req, res);
+});
+
 usuarioRoutes.get("/:id", autenticarToken, async (req, res) => {
     await usuarioController.getUsuarioById(req, res);
 });

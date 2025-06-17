@@ -9,5 +9,7 @@ export default interface DenunciaData {
   categoria: string;
   local: string;
   usuarioId: ObjectId;
+  latitude?: number;
+  longitude?: number;
 }
   
