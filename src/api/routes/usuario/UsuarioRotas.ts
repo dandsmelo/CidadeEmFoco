@@ -37,6 +37,15 @@ usuarioRoutes.post("/enviarCodigoRedefinirSenha", async (req, res) => {
   await usuarioController.enviarCodigoRedefinirSenha(req, res);
 });
 
+usuarioRoutes.post("/verificar-sms-redefinirSenha", async (req, res) => {
+  await usuarioController.verificarCodigoRedefinirSenha(req, res);
+});
+
+usuarioRoutes.post("/redefinir-senha", async (req, res) => {
+  await usuarioController.redefinirSenha(req, res);
+});
+
+
 
 
 export default usuarioRoutes;

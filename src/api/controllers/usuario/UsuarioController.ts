@@ -65,10 +65,10 @@ export class UsuarioController {
   } catch (error) {
   console.error("Erro no login:", error);
   res.status(500).json({ error: "Erro no login", details: error });
-}
-}
+  }
+  }
 
-public async verificarCodigoSMS(req: Request, res: Response) {
+  public async verificarCodigoSMS(req: Request, res: Response) {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -114,7 +114,7 @@ public async verificarCodigoSMS(req: Request, res: Response) {
     console.log(error);
     res.status(500).json({ success: false, message: "Erro ao verificar código" });
   }
-}
+  }
 
 
 
@@ -222,6 +222,32 @@ public async verificarCodigoSMS(req: Request, res: Response) {
       res.status(500).json({ message: "Erro ao verificar código" });
     }
   }
+
+    public async redefinirSenha(req: Request, res: Response) {
+    try {
+      const { email, novaSenha } = req.body;
+
+      const usuario = await service.getByEmail(email);
+      if (!usuario) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+
+      const senhaCriptografada = await bcrypt.hash(novaSenha, 5);
+      const atualizado = await service.atualizarUsuario(usuario._id.toString(), {
+        senha: senhaCriptografada,
+      });
+
+      if (atualizado) {
+        res.status(200).json({ message: "Senha redefinida com sucesso" });
+      } else {
+        res.status(500).json({ message: "Erro ao atualizar senha" });
+      }
+    } catch (error) {
+      console.error("Erro na redefinição de senha:", error);
+      res.status(500).json({ message: "Erro interno" });
+    }
+  }
+
 
 }
 
