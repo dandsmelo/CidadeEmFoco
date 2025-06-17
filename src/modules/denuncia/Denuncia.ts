@@ -11,6 +11,8 @@ export class Denuncia {
   private local: string;
   private usuarioId: ObjectId;
   private imagem?: string;
+  private latitude?: number;
+  private longitude?: number;
 
   constructor(
     titulo: string,
@@ -21,6 +23,8 @@ export class Denuncia {
     local: string,
     usuarioId: ObjectId,
     imagem?: string,
+    latitude?: number,
+    longitude?: number,
     id?: ObjectId
   ) {
     this.id = id;
@@ -32,6 +36,8 @@ export class Denuncia {
     this.local = local;
     this.usuarioId = usuarioId;
     this.imagem = imagem;
+    this.latitude = latitude;
+    this.longitude = longitude;
 
   }
 
@@ -95,6 +101,22 @@ export class Denuncia {
     this.local = local;
   }
 
+  public getLatitude(): number | undefined {
+    return this.latitude;
+  }
+
+  public setLatitude(latitude?: number): void {
+    this.latitude = latitude;
+  }
+
+  public getLongitude(): number | undefined {
+    return this.longitude;
+  }
+
+  public setLongitude(longitude?: number): void {
+    this.longitude = longitude;
+  }
+
   public getUsuarioId(): ObjectId {
     return this.usuarioId;
   }
@@ -113,6 +135,8 @@ export class Denuncia {
       local: this.local,
       usuarioId: this.usuarioId,
       imagem: this.imagem,
+      latitude: this.latitude,
+      longitude: this.longitude,
     };
   }
 }
