@@ -53,4 +53,9 @@ export class UsuarioService {
     public async deletarUsuario(id: string): Promise<boolean> {
         return await this.repository.deletarUsuario(new ObjectId(id));
     }
+
+    public async getByEmail(email: string): Promise<(UsuarioData & { _id: ObjectId }) | null> {
+        return await this.repository.getByEmail(email);
+    }
+
 }

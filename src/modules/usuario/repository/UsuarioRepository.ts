@@ -52,4 +52,9 @@ export class UsuarioRepository {
         const result = await this.getCollection().deleteOne({ _id: id });
         return result.deletedCount > 0;
     }
+
+    public async getByEmail(email: string): Promise<(UsuarioData & { _id: ObjectId }) | null> {
+    return await this.getCollection().findOne({ email });
+    }
+
 }
