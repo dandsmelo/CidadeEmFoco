@@ -33,6 +33,10 @@ usuarioRoutes.post("/verificar-sms", async (req, res) => {
   await usuarioController.verificarCodigoSMS(req, res);
 });
 
+usuarioRoutes.post("/enviarCodigoRedefinirSenha", async (req, res) => {
+  await usuarioController.enviarCodigoRedefinirSenha(req, res);
+});
+
 
 
 export default usuarioRoutes;

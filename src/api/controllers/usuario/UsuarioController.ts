@@ -157,5 +157,74 @@ public async verificarCodigoSMS(req: Request, res: Response) {
     }
   }
 
+  public async enviarCodigoRedefinirSenha(req: Request, res: Response) {
+    try {
+        const { email } = req.body;
+
+        if (!email) {
+            return res.status(400).json({ message: "Email é obrigatório" });
+        }
+
+        const usuario = await service.getByEmail(email);
+
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+
+        if (!usuario.telefone) {
+            return res.status(400).json({ message: "Telefone não cadastrado para este usuário" });
+        }
+
+        const telefoneFormatado = usuario.telefone.startsWith('+') 
+            ? usuario.telefone 
+            : `+55${usuario.telefone}`;
+
+        await sendVerificationCode(telefoneFormatado);
+
+        res.status(200).json({ message: "Código enviado com sucesso" });
+    } catch (err) {
+        console.error("Erro ao enviar código de redefinição de senha:", err);
+        res.status(500).json({ message: "Erro ao enviar código" });
+    }
+  }
+
+  public async verificarCodigoRedefinirSenha(req: Request, res: Response) {
+    try {
+        const { email, code } = req.body;
+
+        if (!email || !code) {
+            return res.status(400).json({ message: "Email e código são obrigatórios" });
+        }
+
+        const usuario = await service.getByEmail(email);
+
+        if (!usuario) {
+            return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+
+        if (!usuario.telefone) {
+            return res.status(400).json({ message: "Telefone não cadastrado para este usuário" });
+        }
+
+        const telefoneFormatado = usuario.telefone.startsWith('+') 
+            ? usuario.telefone 
+            : `+55${usuario.telefone}`;
+
+        const validado = await checkVerificationCode(telefoneFormatado, code);
+
+        if (validado) {
+          res.status(200).json({ success: true, message: "Código verificado com sucesso" });
+        } else {
+          res.status(400).json({ success: false, message: "Código inválido" });
+        }
+    } catch (err) {
+      console.error("Erro ao verificar código de redefinição de senha:", err);
+      res.status(500).json({ message: "Erro ao verificar código" });
+    }
+  }
 
 }
+
+
+
+

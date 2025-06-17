@@ -19,7 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "morgan": "^1.10.0",
-    "twilio": "^5.7.0"
+    "twilio": "^5.7.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
