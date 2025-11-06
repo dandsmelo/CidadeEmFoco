@@ -12,7 +12,6 @@ export class DenunciaController {
       const { titulo, data, status, imagem, descricao, categoria, local } = req.body;
 
       const usuario = (req as any).user;
-      console.log(usuario);
 
       if(!usuario.id) {
         return res.status(401).json({error: "usuário não autenticado"})
@@ -35,11 +34,9 @@ export class DenunciaController {
         longitude,
       );
 
-      console.log(usuarioId);
       const id = await service.criarDenuncia(denuncia);
       res.status(201).json({ message: "Denúncia criada com sucesso", id });
     } catch (err) {
-      console.log(err)
       res.status(500).json({ message: "Erro ao criar denúncia", error: err });
     }
   }

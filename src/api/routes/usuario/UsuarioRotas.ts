@@ -49,7 +49,4 @@ usuarioRoutes.post("/redefinir-senha", async (req, res) => {
   await usuarioController.redefinirSenha(req, res);
 });
 
-
-
-
 export default usuarioRoutes;
