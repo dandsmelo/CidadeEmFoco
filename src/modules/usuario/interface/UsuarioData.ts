@@ -5,5 +5,6 @@ export interface UsuarioData {
     telefone: string;
     email: string;
     senha: string;
+    fotoPerfil?: string;
     tipo: Tipo;
 }
