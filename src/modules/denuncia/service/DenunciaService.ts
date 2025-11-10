@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 import { Denuncia } from "../Denuncia";
 import { DenunciaRepository } from "../repository/DenunciaRepository";
 import DenunciaData from "../interfaces/DenunciaData";
+import { DenunciaFilter } from "../interfaces/DenunciaFilter";
 
 export class DenunciaService {
   private repository = new DenunciaRepository();
@@ -10,16 +11,16 @@ export class DenunciaService {
     return await this.repository.criarDenuncia(denuncia.toObject());
   }
 
-  public async listarDenuncias(): Promise<(DenunciaData & { _id: ObjectId })[]> {
-    return await this.repository.listarDenuncias();
+  public async listarDenuncias(filtros: DenunciaFilter): Promise<(DenunciaData & { _id: ObjectId })[]> {
+    return await this.repository.listarDenuncias(filtros);
   }
 
   public async getDenunciaById(id: string): Promise<(DenunciaData & { _id: ObjectId }) | null> {
     return await this.repository.getDenunciaById(new ObjectId(id));
   }
 
-  public async getDenunciasByUsuarioId(usuarioId: string): Promise<(DenunciaData & { _id: ObjectId })[]> {
-    return await this.repository.getDenunciasByUsuarioId(new ObjectId(usuarioId));
+  public async getDenunciasByUsuarioId(usuarioId: string, filtros: DenunciaFilter): Promise<(DenunciaData & { _id: ObjectId })[]> {
+    return await this.repository.getDenunciasByUsuarioId(new ObjectId(usuarioId), filtros);
   }
 
   public async atualizarDenuncia(id: string, dadosAtualizados: Partial<DenunciaData>): Promise<boolean> {
