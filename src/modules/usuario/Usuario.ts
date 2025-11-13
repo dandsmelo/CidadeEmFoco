@@ -8,6 +8,8 @@ export class Usuario {
     private email: string;
     private senha: string;
     private tipo: Tipo;
+    private cidade: string;
+    private estado: string;
     private fotoPerfil?: string;
 
     constructor(
@@ -16,6 +18,8 @@ export class Usuario {
         email: string,
         senha: string,
         tipo: Tipo,
+        cidade: string,
+        estado: string,
         fotoPerfil?: string,
         id?: ObjectId,
     ) {
@@ -25,6 +29,8 @@ export class Usuario {
         this.email = email;
         this.senha = senha;
         this.tipo = tipo;
+        this.cidade = cidade;
+        this.estado = estado;
         this.fotoPerfil = fotoPerfil;
     }
 
@@ -72,6 +78,22 @@ export class Usuario {
         this.tipo = tipo;
     }
 
+    public getCidade(): string {
+        return this.cidade;
+    }
+
+    public setCidade(cidade: string): void {
+        this.cidade = cidade;
+    }
+
+    public getEstado(): string {
+        return this.estado;
+    }
+
+    public setEstado(estado: string): void {
+        this.estado = estado;
+    }
+
     public getFotoPerfil(): string | undefined {
         return this.fotoPerfil;
     }
@@ -87,6 +109,8 @@ export class Usuario {
             email: this.email,
             senha: this.senha,
             tipo: this.tipo,
+            cidade: this.cidade,
+            estado: this.estado,
             fotoPerfil: this.fotoPerfil,
         };
     }

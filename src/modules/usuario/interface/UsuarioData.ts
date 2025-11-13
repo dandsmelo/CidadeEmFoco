@@ -7,4 +7,6 @@ export interface UsuarioData {
     senha: string;
     fotoPerfil?: string;
     tipo: Tipo;
+    cidade: string;
+    estado: string;
 }
