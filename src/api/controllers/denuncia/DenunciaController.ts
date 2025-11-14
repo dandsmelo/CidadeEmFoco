@@ -48,6 +48,7 @@ export class DenunciaController {
         status: req.query.status ? String(req.query.status).split(",") : undefined,
         dataInicio: req.query.dataInicio as string,
         dataFim: req.query.dataFim as string,
+        ordem: req.query.ordem as string,
       };
 
       const denuncias = await service.listarDenuncias(filtros);
@@ -79,6 +80,7 @@ export class DenunciaController {
         status: req.query.status ? String(req.query.status).split(",") : undefined,
         dataInicio: req.query.dataInicio as string,
         dataFim: req.query.dataFim as string,
+        ordem: req.query.ordem as string,
       };
 
       const denuncias = await service.getDenunciasByUsuarioId(userId, filtros);

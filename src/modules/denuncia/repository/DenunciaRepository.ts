@@ -27,7 +27,9 @@ export class DenunciaRepository {
       if (filtros.dataFim) query.data.$lte = new Date(filtros.dataFim);
     }
 
-    return await this.getCollection().find(query).toArray();
+    const sort = this.getOrder(filtros.ordem);
+
+    return await this.getCollection().find(query).sort(sort).toArray();
   }
 
   public async getDenunciaById(id: ObjectId): Promise<(DenunciaData & { _id: ObjectId }) | null> {
@@ -50,7 +52,9 @@ export class DenunciaRepository {
       if (filtros.dataFim) query.data.$lte = new Date(filtros.dataFim);
     }
 
-    return await this.getCollection().find(query).toArray();
+    const sort = this.getOrder(filtros.ordem);
+
+    return await this.getCollection().find(query).sort(sort).toArray();
   }
 
   public async atualizarDenuncia(id: ObjectId, dados: Partial<DenunciaData>): Promise<boolean> {
@@ -61,5 +65,16 @@ export class DenunciaRepository {
   public async deletarDenuncia(id: ObjectId): Promise<boolean> {
     const result = await this.getCollection().deleteOne({ _id: id });
     return result.deletedCount > 0;
+  }
+
+  private getOrder(ordem?: string): Record<string, 1 | -1> {
+    switch (ordem) {
+      case "categoria": return { categoria: 1 };
+      case "status": return { status: 1 };
+      case "data_recente": return { data: -1 };
+      case "data_antiga": return { data: 1 };
+      case "titulo": return { titulo: 1 };
+      default: return {};
+    }
   }
 }
