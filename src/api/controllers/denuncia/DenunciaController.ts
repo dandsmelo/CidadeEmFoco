@@ -43,7 +43,14 @@ export class DenunciaController {
 
   public async listarDenuncias(req: Request, res: Response) {
     try {
-      const denuncias = await service.listarDenuncias();
+      const filtros = {
+        categoria: req.query.categoria ? String(req.query.categoria).split(",") : undefined,
+        status: req.query.status ? String(req.query.status).split(",") : undefined,
+        dataInicio: req.query.dataInicio as string,
+        dataFim: req.query.dataFim as string,
+      };
+
+      const denuncias = await service.listarDenuncias(filtros);
       res.status(200).json(denuncias);
     } catch (err) {
       res.status(500).json({ message: "Erro ao listar denúncias", error: err });
@@ -66,7 +73,15 @@ export class DenunciaController {
   public async getDenunciasByUsuarioId(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const denuncias = await service.getDenunciasByUsuarioId(userId);
+
+      const filtros = {
+        categoria: req.query.categoria ? String(req.query.categoria).split(",") : undefined,
+        status: req.query.status ? String(req.query.status).split(",") : undefined,
+        dataInicio: req.query.dataInicio as string,
+        dataFim: req.query.dataFim as string,
+      };
+
+      const denuncias = await service.getDenunciasByUsuarioId(userId, filtros);
       if (denuncias.length === 0) {
         return res.status(404).json({ message: "Nenhuma denúncia encontrada para este usuário." });
       }
