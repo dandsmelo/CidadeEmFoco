@@ -3,4 +3,5 @@ export interface DenunciaFilter {
   status?: string[];
   dataInicio?: string;
   dataFim?: string;
+  ordem?: string;
 }
