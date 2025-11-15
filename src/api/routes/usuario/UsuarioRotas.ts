@@ -26,7 +26,7 @@ usuarioRoutes.get("/:id", autenticarToken, async (req, res) => {
     await usuarioController.getUsuarioById(req, res);
 });
 
-usuarioRoutes.put("/:id", autenticarToken, upload.single("fotoPerfil"), async (req, res) => {
+usuarioRoutes.put("/:id", autenticarToken, async (req, res) => {
     await usuarioController.atualizarUsuario(req, res);
 });
 
@@ -48,6 +48,10 @@ usuarioRoutes.post("/verificar-sms-redefinirSenha", async (req, res) => {
 
 usuarioRoutes.post("/redefinir-senha", async (req, res) => {
   await usuarioController.redefinirSenha(req, res);
+});
+
+usuarioRoutes.put("/:id/foto", autenticarToken, upload.single("fotoPerfil"), async (req, res) => {
+    await usuarioController.atualizarFotoPerfil(req, res);
 });
 
 export default usuarioRoutes;

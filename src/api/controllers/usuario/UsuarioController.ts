@@ -267,6 +267,27 @@ export class UsuarioController {
     }
   }
 
+  public async atualizarFotoPerfil(req: Request, res: Response) {
+    console.log("Chegou a requisição PUT /foto");
+    console.log("req.file:", req.file); 
+    console.log("req.body:", req.body); 
+    try {
+      const { id } = req.params;
+      if (!req.file) {
+        return res.status(500).json({ message: "Multer falhou em processar o arquivo. Verifique logs." });
+      }
+      const fotoPerfilPath = req.file.filename; 
+      const usuario = await service.atualizarFotoPerfil(id, fotoPerfilPath);
+      if (!usuario) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+      res.status(200).json({ message: "Foto de perfil atualizada com sucesso", fotoPerfil: fotoPerfilPath });
+    } catch (err) {
+      console.error("Erro ao atualizar foto de perfil:", err);
+      res.status(500).json({ message: "Erro ao atualizar foto de perfil" });
+    }
+  }
+
 
 }
 
