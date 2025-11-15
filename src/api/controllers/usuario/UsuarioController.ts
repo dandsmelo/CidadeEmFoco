@@ -10,11 +10,13 @@ const service = new UsuarioService();
 export class UsuarioController {
   public async criarUsuario(req: Request, res: Response) {
     try {
-      const { nome, telefone, email, senha, tipo, cidade, estado, fotoPerfil } = req.body;
+      const { nome, telefone, email, senha, tipo, cidade, estado} = req.body;
 
       if (!nome || !telefone || !email || !senha || !tipo || !cidade || !estado) {
         return res.status(400).json({ message: "Campos obrigatórios faltando" });
       }
+
+      const fotoPerfil = req.file ? req.file.filename : undefined;
 
       const senhaCriptografada = await bcrypt.hash(senha, 5);
 

@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { UsuarioController } from "../../controllers/usuario/UsuarioController";
 import { autenticarToken } from "../../middlewares/authMiddleware";
+import { upload } from "../../../config/multerConfig";
 
 const usuarioController = new UsuarioController();
 const usuarioRoutes = Router();
 
-usuarioRoutes.post("/", async (req, res) => {
+usuarioRoutes.post("/", upload.single("fotoPerfil"),async (req, res) => {
     await usuarioController.criarUsuario(req, res);
 });
 
@@ -25,7 +26,7 @@ usuarioRoutes.get("/:id", autenticarToken, async (req, res) => {
     await usuarioController.getUsuarioById(req, res);
 });
 
-usuarioRoutes.put("/:id", autenticarToken, async (req, res) => {
+usuarioRoutes.put("/:id", autenticarToken, upload.single("fotoPerfil"), async (req, res) => {
     await usuarioController.atualizarUsuario(req, res);
 });
 
