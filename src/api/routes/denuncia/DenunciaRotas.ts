@@ -6,28 +6,79 @@ import { upload } from "../../../config/multerConfig";
 const denunciaController = new DenunciaController();
 const denunciaRoutes = Router();
 
-denunciaRoutes.post("/", autenticarToken, upload.single("imagem"), (req, res) => {
-  denunciaController.criarDenuncia(req, res);
-});
+denunciaRoutes.post(
+  "/",
+  autenticarToken,
+  upload.single("imagem"),
+  async (req, res, next) => {
+    try {
+      await denunciaController.criarDenuncia(req, res);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
-denunciaRoutes.get("/", autenticarToken, async (req, res) => {
-    await denunciaController.listarDenuncias(req, res);
-});
-  
-denunciaRoutes.get("/:id", autenticarToken, async (req, res) => {
-    await denunciaController.getDenunciaById(req, res);
-});
+denunciaRoutes.get(
+  "/",
+  autenticarToken,
+  async (req, res, next) => {
+    try {
+      await denunciaController.listarDenuncias(req, res);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
-denunciaRoutes.get("/usuario/:userId", autenticarToken, async (req, res) => {
-    await denunciaController.getDenunciasByUsuarioId(req, res);
-})
-  
-denunciaRoutes.put("/:id", autenticarToken, upload.single("imagem"), (req, res) => {
-  denunciaController.atualizarDenuncia(req, res);
-});
-  
-denunciaRoutes.delete("/:id", autenticarToken, async (req, res) => {
-    await denunciaController.deletarDenuncia(req, res);
-});
+denunciaRoutes.get(
+  "/usuario/:userId",
+  autenticarToken,
+  async (req, res, next) => {
+    try {
+      await denunciaController.getDenunciasByUsuarioId(req, res);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+denunciaRoutes.get(
+  "/:id",
+  autenticarToken,
+  async (req, res, next) => {
+    try {
+      await denunciaController.getDenunciaById(req, res);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+
+denunciaRoutes.put(
+  "/:id",
+  autenticarToken,
+  upload.single("imagem"),
+  async (req, res, next) => {
+    try {
+      await denunciaController.atualizarDenuncia(req, res);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+denunciaRoutes.delete(
+  "/:id",
+  autenticarToken,
+  async (req, res, next) => {
+    try {
+      await denunciaController.deletarDenuncia(req, res);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 export default denunciaRoutes;
