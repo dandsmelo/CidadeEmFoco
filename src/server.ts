@@ -12,7 +12,7 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-const UPLOAD_DIR = path.join(__dirname, 'uploads');
+const UPLOAD_DIR = path.resolve(__dirname, "..", "uploads");
 
 if (!fs.existsSync(UPLOAD_DIR)) {
     console.log(`Criando diretório de uploads em: ${UPLOAD_DIR}`);
