@@ -67,6 +67,65 @@ export class DenunciaRepository {
     return result.deletedCount > 0;
   }
 
+  public async getDenunciaCountByUsuarioId(usuarioId: ObjectId) {
+    const collection = this.getCollection();
+
+    const resultado = await collection.aggregate([
+      { $match: { usuarioId } },
+      { $group: { _id: "$status", total: { $sum: 1 } } }
+    ]).toArray();
+
+    const contagemPadrao: any = {
+      pendente: 0,
+      em_analise: 0,
+      em_andamento: 0,
+      resolvida: 0,
+      rejeitada: 0
+    };
+
+    for (const item of resultado) {
+      const key = item._id.toLowerCase().replace(" ", "_");
+      contagemPadrao[key] = item.total;
+    }
+
+    const total = resultado.reduce((sum, item) => sum + item.total, 0);
+
+    return {
+      total,
+      porStatus: contagemPadrao
+    };
+  }
+
+  public async getResumoGeral() {
+    const collection = this.getCollection();
+
+    const totalDenuncias = await collection.countDocuments();
+
+    const categoriaMaisComumAgg = await collection.aggregate([
+      { $group: { _id: "$categoria", total: { $sum: 1 } } },
+      { $sort: { total: -1 } },
+      { $limit: 1 }
+    ]).toArray();
+
+    const categoriaMaisComum = categoriaMaisComumAgg[0]
+      ? {
+          categoria: categoriaMaisComumAgg[0]._id,
+          total: categoriaMaisComumAgg[0].total
+        }
+      : {
+          categoria: null,
+          total: 0
+        };
+
+    const resolvidas = await collection.countDocuments({ status: "resolvida" });
+
+    return {
+      totalDenuncias,
+      categoriaMaisComum,
+      resolvidas
+    };
+  }
+
   private getOrder(ordem?: string): Record<string, 1 | -1> {
     switch (ordem) {
       case "categoria": return { categoria: 1 };
