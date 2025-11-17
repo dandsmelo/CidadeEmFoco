@@ -118,4 +118,29 @@ export class DenunciaController {
       res.status(500).json({ message: "Erro ao deletar denúncia", error: err });
     }
   }
+
+  public async getDenunciaCountByUsuarioId(req: Request, res: Response) {
+    try {
+      const { userId } = req.params;
+
+      const denunciaCount = await service.getDenunciaCountByUsuarioId(userId);
+
+      return res.status(200).json(denunciaCount);
+    } catch (err) {
+      return res.status(500).json({
+        message: "Erro ao obter estatísticas do usuário",
+        error: err
+      });
+    }
+  }
+
+  public async getResumoGeral(req: Request, res: Response) {
+    try {
+      const service = new DenunciaService();
+      const resumo = await service.getResumoGeral();
+      return res.status(200).json(resumo);
+    } catch (err) {
+      return res.status(500).json({ error: "Erro ao gerar resumo geral" });
+    }
+  }
 }

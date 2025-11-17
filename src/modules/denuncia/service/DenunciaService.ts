@@ -30,4 +30,12 @@ export class DenunciaService {
   public async deletarDenuncia(id: string): Promise<boolean> {
     return await this.repository.deletarDenuncia(new ObjectId(id));
   }
+
+  public async getDenunciaCountByUsuarioId(usuarioId: string) {
+    return await this.repository.getDenunciaCountByUsuarioId(new ObjectId(usuarioId));
+  }
+
+  public async getResumoGeral() {
+    return await this.repository.getResumoGeral();
+  }
 }

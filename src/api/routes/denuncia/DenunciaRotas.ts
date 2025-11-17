@@ -29,4 +29,12 @@ denunciaRoutes.delete("/:id", autenticarToken, async (req, res) => {
     await denunciaController.deletarDenuncia(req, res);
 });
 
+denunciaRoutes.get("/usuario/:userId/count", autenticarToken, async (req, res) => {
+    await denunciaController.getDenunciaCountByUsuarioId(req, res);
+});
+
+denunciaRoutes.get("/resumo/geral", autenticarToken, async (req, res) => {
+    await denunciaController.getResumoGeral(req, res);
+});
+
 export default denunciaRoutes;
