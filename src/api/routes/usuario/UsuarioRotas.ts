@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { UsuarioController } from "../../controllers/usuario/UsuarioController";
 import { autenticarToken } from "../../middlewares/authMiddleware";
+import { upload } from "../../../config/multerConfig";
 
 const usuarioController = new UsuarioController();
 const usuarioRoutes = Router();
 
-usuarioRoutes.post("/", async (req, res) => {
+usuarioRoutes.post("/", upload.single("fotoPerfil"),async (req, res) => {
     await usuarioController.criarUsuario(req, res);
 });
 
@@ -47,6 +48,10 @@ usuarioRoutes.post("/verificar-sms-redefinirSenha", async (req, res) => {
 
 usuarioRoutes.post("/redefinir-senha", async (req, res) => {
   await usuarioController.redefinirSenha(req, res);
+});
+
+usuarioRoutes.put("/:id/foto", autenticarToken, upload.single("fotoPerfil"), async (req, res) => {
+    await usuarioController.atualizarFotoPerfil(req, res);
 });
 
 export default usuarioRoutes;

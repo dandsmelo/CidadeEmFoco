@@ -7,39 +7,43 @@ import { geocodeAddress } from "../../../modules/denuncia/service/geocodeAddress
 const service = new DenunciaService();
 
 export class DenunciaController {
+  
   public async criarDenuncia(req: Request, res: Response) {
     try {
-      const { titulo, data, status, imagem, descricao, categoria, local } = req.body;
-
+      const { titulo, data, status, descricao, categoria, local } = req.body;
       const usuario = (req as any).user;
 
-      if(!usuario.id) {
-        return res.status(401).json({error: "usuário não autenticado"})
+      if (!usuario?.id) {
+        return res.status(401).json({ error: "Usuário não autenticado" });
       }
 
+      const imagem = req.file ? `/uploads/${req.file.filename}` : undefined;
       const usuarioId = new ObjectId(usuario.id);
 
       const { latitude, longitude } = await geocodeAddress(local);
-       
+
       const denuncia = new Denuncia(
-        titulo, 
-        new Date(data), 
-        status, 
-        descricao, 
-        categoria, 
-        local, 
-        usuarioId, 
+        titulo,
+        new Date(data),
+        status,
+        descricao,
+        categoria,
+        local,
+        usuarioId,
         imagem,
         latitude,
-        longitude,
+        longitude
       );
 
       const id = await service.criarDenuncia(denuncia);
-      res.status(201).json({ message: "Denúncia criada com sucesso", id });
+      return res.status(201).json({ message: "Denúncia criada com sucesso", id });
+
     } catch (err) {
-      res.status(500).json({ message: "Erro ao criar denúncia", error: err });
+      return res.status(500).json({ message: "Erro ao criar denúncia", error: err });
     }
   }
+
+
 
   public async listarDenuncias(req: Request, res: Response) {
     try {
@@ -96,15 +100,33 @@ export class DenunciaController {
   public async atualizarDenuncia(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const denuncia = await service.atualizarDenuncia(id, req.body);
-      if (!denuncia) {
+
+      const dadosAtualizados: any = {
+        ...req.body,
+      };
+
+      if (req.file) {
+        dadosAtualizados.imagem = `/uploads/${req.file.filename}`;
+      }
+
+      if (dadosAtualizados.data) {
+        dadosAtualizados.data = new Date(dadosAtualizados.data);
+      }
+
+      const atualizado = await service.atualizarDenuncia(id, dadosAtualizados);
+
+      if (!atualizado) {
         return res.status(404).json({ message: "Denúncia não encontrada" });
       }
-      res.status(200).json({ message: "Denúncia atualizada com sucesso" });
+
+      return res.status(200).json({ message: "Denúncia atualizada com sucesso" });
+
     } catch (err) {
-      res.status(500).json({ message: "Erro ao atualizar denúncia", error: err });
+      return res.status(500).json({ message: "Erro ao atualizar denúncia", error: err });
     }
   }
+
+
 
   public async deletarDenuncia(req: Request, res: Response) {
     try {

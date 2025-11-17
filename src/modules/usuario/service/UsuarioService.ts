@@ -58,4 +58,19 @@ export class UsuarioService {
         return await this.repository.getByEmail(email);
     }
 
+    public async atualizarFotoPerfil(id: string, fotoPath: string): Promise<any | null> {
+        try {
+            console.log(`ID recebido do Front-end: ${id}`);
+            const objectId = new ObjectId(id);
+            const usuarioAtualizado = await this.repository.atualizarFoto(objectId, fotoPath);
+            
+            return usuarioAtualizado;
+            
+        } catch (error) {
+            console.error("Erro no Service ao atualizar foto de perfil:", error);
+            throw new Error("Falha ao atualizar foto de perfil no banco de dados.");
+        }
+    }
 }
+
+

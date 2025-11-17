@@ -10,11 +10,13 @@ const service = new UsuarioService();
 export class UsuarioController {
   public async criarUsuario(req: Request, res: Response) {
     try {
-      const { nome, telefone, email, senha, tipo, cidade, estado, fotoPerfil } = req.body;
+      const { nome, telefone, email, senha, tipo, cidade, estado} = req.body;
 
       if (!nome || !telefone || !email || !senha || !tipo || !cidade || !estado) {
         return res.status(400).json({ message: "Campos obrigatórios faltando" });
       }
+
+      const fotoPerfil = req.file ? req.file.filename : undefined;
 
       const senhaCriptografada = await bcrypt.hash(senha, 5);
 
@@ -262,6 +264,27 @@ export class UsuarioController {
     } catch (error) {
       console.error("Erro na redefinição de senha:", error);
       res.status(500).json({ message: "Erro interno" });
+    }
+  }
+
+  public async atualizarFotoPerfil(req: Request, res: Response) {
+    console.log("Chegou a requisição PUT /foto");
+    console.log("req.file:", req.file); 
+    console.log("req.body:", req.body); 
+    try {
+      const { id } = req.params;
+      if (!req.file) {
+        return res.status(500).json({ message: "Multer falhou em processar o arquivo. Verifique logs." });
+      }
+      const fotoPerfilPath = req.file.filename; 
+      const usuario = await service.atualizarFotoPerfil(id, fotoPerfilPath);
+      if (!usuario) {
+        return res.status(404).json({ message: "Usuário não encontrado" });
+      }
+      res.status(200).json({ message: "Foto de perfil atualizada com sucesso", fotoPerfil: fotoPerfilPath });
+    } catch (err) {
+      console.error("Erro ao atualizar foto de perfil:", err);
+      res.status(500).json({ message: "Erro ao atualizar foto de perfil" });
     }
   }
 

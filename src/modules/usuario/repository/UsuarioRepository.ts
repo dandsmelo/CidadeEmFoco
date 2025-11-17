@@ -57,4 +57,24 @@ export class UsuarioRepository {
     return await this.getCollection().findOne({ email });
     }
 
+    public async atualizarFoto(id: ObjectId, fotoPath: string): Promise<any | null> {
+        
+        console.log(`Tentando atualizar o usuário ID: ${id.toHexString()} com foto: ${fotoPath}`);
+        
+        const result = await this.getCollection().updateOne(
+            { _id: id },
+            { $set: { fotoPerfil: fotoPath } } 
+        );
+
+        if (result.modifiedCount > 0) {
+            console.log(`Sucesso: Campo fotoPerfil atualizado para o usuário ID: ${id.toHexString()}`); 
+            return await this.getUsuarioById(id);
+        }
+        
+        console.log(`Falha: Nenhum documento atualizado para o ID: ${id.toHexString()}.`); 
+        return null;
+    }
+
+
+
 }

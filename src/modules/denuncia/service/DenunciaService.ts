@@ -24,8 +24,19 @@ export class DenunciaService {
   }
 
   public async atualizarDenuncia(id: string, dadosAtualizados: Partial<DenunciaData>): Promise<boolean> {
-    return await this.repository.atualizarDenuncia(new ObjectId(id), dadosAtualizados);
+    const denunciaId = new ObjectId(id);
+
+    const denunciaExistente = await this.repository.getDenunciaById(denunciaId);
+    if (!denunciaExistente) {
+      throw new Error("Denúncia não encontrada");
+    }
+    if (!dadosAtualizados.imagem) {
+      dadosAtualizados.imagem = denunciaExistente.imagem;
+    }
+
+    return await this.repository.atualizarDenuncia(denunciaId, dadosAtualizados);
   }
+
 
   public async deletarDenuncia(id: string): Promise<boolean> {
     return await this.repository.deletarDenuncia(new ObjectId(id));
