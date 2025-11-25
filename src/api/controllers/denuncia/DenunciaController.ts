@@ -10,7 +10,7 @@ export class DenunciaController {
   
   public async criarDenuncia(req: Request, res: Response) {
     try {
-      const { titulo, data, status, descricao, categoria, local } = req.body;
+      const { titulo, data, status, descricao, categoria, local, feedback } = req.body;
       const usuario = (req as any).user;
 
       if (!usuario?.id) {
@@ -31,6 +31,7 @@ export class DenunciaController {
         local,
         usuarioId,
         imagem,
+        feedback,
         latitude,
         longitude
       );

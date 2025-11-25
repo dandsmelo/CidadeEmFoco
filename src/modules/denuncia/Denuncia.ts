@@ -11,6 +11,7 @@ export class Denuncia {
   private local: string;
   private usuarioId: ObjectId;
   private imagem?: string;
+  private feedback?: string;
   private latitude?: number;
   private longitude?: number;
 
@@ -23,6 +24,7 @@ export class Denuncia {
     local: string,
     usuarioId: ObjectId,
     imagem?: string,
+    feedback?: string,
     latitude?: number,
     longitude?: number,
     id?: ObjectId
@@ -36,6 +38,7 @@ export class Denuncia {
     this.local = local;
     this.usuarioId = usuarioId;
     this.imagem = imagem;
+    this.feedback = feedback;
     this.latitude = latitude;
     this.longitude = longitude;
 
@@ -101,6 +104,14 @@ export class Denuncia {
     this.local = local;
   }
 
+  public getFeedback(): string | undefined {
+    return this.feedback;
+  }
+
+  public setFeedback(feedback?: string): void {
+    this.feedback = feedback;
+  }
+
   public getLatitude(): number | undefined {
     return this.latitude;
   }
@@ -135,6 +146,7 @@ export class Denuncia {
       local: this.local,
       usuarioId: this.usuarioId,
       imagem: this.imagem,
+      feedback: this.feedback,
       latitude: this.latitude,
       longitude: this.longitude,
     };
